@@ -18,4 +18,5 @@ public interface UserAppointmentRepository extends JpaRepository<UserAppointment
 
     @Transactional
     void deleteByAppointmentId(Long appointmentId);
+
 }

@@ -3,9 +3,9 @@ package com.kristaps.back_end.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.kristaps.back_end.models.appointmentModel;
+import com.kristaps.back_end.models.AppointmentModel;
 
 @Repository
-public interface appointmentRepository extends JpaRepository<appointmentModel, Long> {
+public interface appointmentRepository extends JpaRepository<AppointmentModel, Long> {
 
 }

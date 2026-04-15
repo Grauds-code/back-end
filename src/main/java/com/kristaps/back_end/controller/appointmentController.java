@@ -9,35 +9,36 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.kristaps.back_end.models.appointmentModel;
+import com.kristaps.back_end.models.AppointmentModel;
 import com.kristaps.back_end.services.appointmentService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = { "*" }, allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST,
+        RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS })
 
 public class appointmentController {
 
     private final appointmentService appointmentService;
 
     @PostMapping("/api/v2/appointments")
-    public ResponseEntity<Long> createAppointment(@RequestBody appointmentModel appointment) {
+    public ResponseEntity<Long> createAppointment(@RequestBody AppointmentModel appointment) {
         try {
             return new ResponseEntity<>(appointmentService.createAppointment(appointment), HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/api/v2/appointments")
-    public ResponseEntity<List<appointmentModel>> getAllAppointments(@RequestParam String email) {
+    public ResponseEntity<List<AppointmentModel>> getAllAppointments(@RequestParam String email) {
         try {
             return new ResponseEntity<>(appointmentService.findAllAppointments(email), HttpStatus.OK);
         } catch (Exception e) {
@@ -50,7 +51,7 @@ public class appointmentController {
         try {
             appointmentService.registerForAppointment(id, email);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -59,16 +60,6 @@ public class appointmentController {
     public ResponseEntity<Void> cancelRegistration(@PathVariable Long id, @RequestParam String email) {
         appointmentService.cancelRegistration(id, email);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PutMapping("/api/v2/appointments/{id}")
-    public ResponseEntity<Void> updateAppointment(@PathVariable Long id, @RequestBody appointmentModel appointment) {
-        try {
-            appointmentService.updateAppointment(id, appointment);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (IllegalStateException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
     @DeleteMapping("/api/v2/appointments/{id}")
