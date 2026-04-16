@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.kristaps.back_end.models.AppointmentModel;
 import com.kristaps.back_end.services.appointmentService;
@@ -21,8 +19,6 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = { "*" }, allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST,
-        RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS })
 
 public class appointmentController {
 
@@ -58,13 +54,21 @@ public class appointmentController {
 
     @DeleteMapping("/api/v2/appointments/{id}/register")
     public ResponseEntity<Void> cancelRegistration(@PathVariable Long id, @RequestParam String email) {
-        appointmentService.cancelRegistration(id, email);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            appointmentService.cancelRegistration(id, email);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/api/v2/appointments/{id}")
     public ResponseEntity<Void> deleteAppointment(@PathVariable Long id) {
-        appointmentService.deleteAppointment(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            appointmentService.deleteAppointment(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

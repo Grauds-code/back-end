@@ -11,16 +11,13 @@ import com.kristaps.back_end.services.UserService;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = { "*" }, allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST,
-        RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS })
+
 public class UserController {
 
     private final UserService userService;
